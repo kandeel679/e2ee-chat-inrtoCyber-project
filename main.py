@@ -17,7 +17,7 @@ def receiving_messages(sock):
         encrypted_message = sock.recv(1024)
         decrypted_message = rsa.decrypt(encrypted_message, private_key)
         Not_decrypted_message = encrypted_message
-        print("Partner: " + Not_decrypted_message)
+        print("Partner: " + Not_decrypted_message.decode())
 
 def start_server():
     global public_parter  # Make sure to use the global variable
