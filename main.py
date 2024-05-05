@@ -23,8 +23,8 @@ def start_server():
     server.listen()
 
     client, _ = server.accept()
-    client.send(public_key.save_pkcs1("PEM"))
     public_parter=rsa.PublicKey.load_pkcs1(client.recv(1024))
+    client.send(public_key.save_pkcs1("PEM"))
     print("Connected to client")
 
     threading.Thread(target=sending_messages, args=(client,)).start()
