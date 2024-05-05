@@ -1,10 +1,16 @@
 import socket
 import threading
+import rsa
+
+public_key, private_key = rsa.newkeys(1024)
+public_parter = None
+
+
 
 def sending_messages(sock):
     while True:
         message = input("")
-        sock.send(message.encode())
+        sock.send(rsa.encrypt(message.encode()),public_parter)
         print("You: " + message)
 
 def receiving_messages(sock):
@@ -17,6 +23,8 @@ def start_server():
     server.listen()
 
     client, _ = server.accept()
+    client.send(public_key.save_pkcs1("PEM"))
+    public_parter=rsa.PublicKey.load_pkcs1(client.recv(1024))
     print("Connected to client")
 
     threading.Thread(target=sending_messages, args=(client,)).start()
@@ -25,6 +33,8 @@ def start_server():
 def start_client():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.connect(("192.168.1.6", 9999))
+    public_parter=rsa.PublicKey.load_pkcs1(server.recv(1024))
+    server.send(public_key.save_pkcs1("PEM"))
     print("Connected to server")
 
     threading.Thread(target=sending_messages, args=(server,)).start()
