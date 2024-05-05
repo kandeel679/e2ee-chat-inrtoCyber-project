@@ -10,7 +10,7 @@ public_parter = None
 def sending_messages(sock):
     while True:
         message = input("")
-        sock.send(rsa.encrypt(message.encode()),public_parter)
+        sock.send(rsa.encrypt(message.encode(),public_parter))
         print("You: " + message)
 
 def receiving_messages(sock):
