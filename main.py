@@ -15,7 +15,7 @@ def sending_messages(sock):
 
 def receiving_messages(sock):
     while True:
-        print("Partner: " + sock.recv(1024).decode())
+        print("Partner: " + rsa.decrypt(sock.recv(1024),private_key))
 
 def start_server():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
